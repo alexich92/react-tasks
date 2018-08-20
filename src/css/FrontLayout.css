@@ -1,0 +1,17 @@
+.box-row{
+    margin-top: 130px;
+}
+
+#box{
+    padding: 50px;
+    border:2px solid gray;
+}
+
+.front-nav{
+    background-color: rgba(76, 69, 22, 0.08);
+    height: 45px;
+}
+
+.errors{
+    color:red;
+}

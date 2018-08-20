@@ -1,0 +1,14 @@
+.back-nav{
+    background-color: rgba(175, 156, 101, 0.5);
+    margin-bottom: 50px;
+
+}
+
+#logoutButton{
+    margin-top: -85px;
+    margin-right: 7px;
+}
+
+.back-nav li a {
+    font-weight: 700;
+}
