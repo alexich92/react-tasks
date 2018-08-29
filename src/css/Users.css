@@ -6,3 +6,7 @@
     margin-top: 10px;
     margin-left:40%;
 }
+
+.table-column.odd {
+    background: rgba(173, 156, 106, 0.5);
+}

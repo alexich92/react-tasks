@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import FrontLayout from '../Misc/FrontLayout';
 import axios from 'axios';
 import {Button, FormGroup, Form, Label, Input} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 export default class Login extends Component {
     state = {
         email: '',
         password: '',
-        errors:''
+        errorMessage:''
     };
 
     _onChange = (e) => {
@@ -27,17 +28,17 @@ export default class Login extends Component {
 
         if (response && response.data && response.data.data) {
             sessionStorage.setItem('token', response.data.data.jwt);
-            this.props.history.push('/users');
+            this.props.history.push('/tasks');
         } else {
             this.setState({
-                errors: response.data.errorMessage
+                errorMessage: response.data.errorMessage
             });
 
         }
     };
 
     render() {
-        const {email, password} = this.state;
+        const {email, password,errorMessage} = this.state;
 
         return (
             <FrontLayout>
@@ -61,9 +62,9 @@ export default class Login extends Component {
                                value={password}
                                onChange={this._onChange}/>
                     </FormGroup>
-                    <p className="errors">{this.state.errors}</p>
+                    {errorMessage !== '' && <p className="errors">{this.state.errorMessage}</p>}
                     <Button onClick={this._login}>Login</Button>
-                    <a href="/forgot-password" style={{float:'right',marginTop:'6px'}}>Forgot your password?</a>
+                    <Link to={'forgot-password'} style={{float:'right',marginTop:'6px'}}>Forgot your password?</Link>
                 </Form>
 
             </FrontLayout>

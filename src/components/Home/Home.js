@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {Link} from "react-router-dom";
+import Layout from "../Misc/Layout";
 
 export default class Home extends Component {
     render() {
+        const {user} = this.props;
         return (
-            <div>
-                <p>Hello, friends!</p>
-                <p>Go to <Link to={'/about'}>About</Link> page.</p>
-            </div>
+            <Layout user={user}>
+                Home
+            </Layout>
         )
     }
 }

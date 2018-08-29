@@ -8,6 +8,7 @@ import qs from 'qs';
 
 export default class Layout extends Component {
     render() {
+        const {user} = this.props;
         if (!sessionStorage.getItem('token')) {
             return <Redirect to={'/login'}/>
         }
@@ -23,8 +24,8 @@ export default class Layout extends Component {
 
         return (
             <div>
-                <Header/>
-                <Container className={'layout'}>
+                <Header user={user}/>
+                <Container className={'layout'} style={{marginBottom:'100px'}}>
                     <div className={'content'}>
                         {this.props.children}
                     </div>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './css/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Router from "./Router";
+import 'moment-timezone';
 
 class App extends Component {
     render() {

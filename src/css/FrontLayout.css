@@ -15,3 +15,15 @@
 .errors{
     color:red;
 }
+
+.menu-item {
+    padding: 8px 10px 0px 10px;
+    font-weight: 600;
+}
+
+.menu-item a:hover{
+    text-decoration: none;
+}
+.front-nav li:hover {
+    background-color:blanchedalmond ;
+}

@@ -9,7 +9,7 @@ export default class ForgotPassword extends Component {
         password:'',
         resetPassword:false,
         code: '',
-        errors:[],
+        errorMessage:'',
         shouldRerender:false
     };
 
@@ -26,7 +26,9 @@ export default class ForgotPassword extends Component {
         this.setState({
             resetPassword: !this.state.resetPassword,
             email:'',
-            errors:[]
+            password:'',
+            code:'',
+            errorMessage:''
         });
     };
 
@@ -39,11 +41,12 @@ export default class ForgotPassword extends Component {
         if (res && res.data && res.data.responseType === 'success') {
             this.setState({
                 email:'',
-                errors:[]
+                errorMessage:'',
+                resetPassword:true
             });
         } else {
             this.setState({
-                errors: res.data.errorMessage
+                errorMessage: res.data.errorMessage
             })
         }
 
@@ -55,23 +58,17 @@ export default class ForgotPassword extends Component {
         const res = await axios.post(process.env.REACT_APP_API_URL + 'change-password', {email,code,password});
 
         if (res && res.data && res.data.responseType === 'success') {
-            this.setState({
-                email:'',
-                code:'',
-                password:'',
-                errors:[],
-                resetPassword:false,
-            });
+            this.props.history.push('/login');
         } else {
             this.setState({
-                errors: res.data.errorMessage
+                errorMessage: res.data.errorMessage
             })
         }
 
     }
 
     render() {
-        const {email,code,password,resetPassword} = this.state;
+        const {email,code,password,resetPassword,errorMessage} = this.state;
         return (
             <FrontLayout>
                 <h2 className="text-center">{resetPassword ? 'Reset password' :'Forgot password'}</h2>
@@ -104,7 +101,7 @@ export default class ForgotPassword extends Component {
                                onChange={this._onChange}/>
                     </FormGroup> }
 
-                    <p className='errors'>{this.state.errors}</p>
+                    {errorMessage !=='' && <p className='errors'>{errorMessage}</p>}
                     <Button color="primary"
                             onClick={resetPassword ? this._resetPassword : this._sendResetCode}>
                             {resetPassword ? 'Reset password' : 'Send reset code' }
@@ -113,9 +110,7 @@ export default class ForgotPassword extends Component {
                        onClick={this._toggle}
                     >{resetPassword ?'Resend code' : 'Already have a code?'}
                     </p>
-
                 </Form>
-
             </FrontLayout>
         )
     }

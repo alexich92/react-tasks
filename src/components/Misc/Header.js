@@ -1,43 +1,29 @@
 import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import {Button,NavLink,NavItem,Nav} from 'reactstrap';
+import {Link} from 'react-router-dom';
+import {NavLink,NavItem,Nav} from 'reactstrap';
 import '../../css/Header.css';
 
 export default class Header extends Component {
 
-
-    state = {
-        redirect: false
-    };
-
-    _logout = () => {
-        sessionStorage.removeItem('token');
-
-        this.setState({
-            redirect: true
-        });
-    };
-
     render() {
-        if (this.state.redirect) {
-            return <Redirect to={'/login'}/>;
-        }
-
+        const {user} = this.props;
         return (
             <div className={'header'}>
-                <Nav className='back-nav'>
+                <Nav className="back-nav">
                     <NavItem>
                         <NavLink href="#">React app</NavLink>
                     </NavItem>
-                    <NavItem >
-                        <NavLink  href="/users">Users</NavLink>
-                    </NavItem>
+                    {user && user.role_id === 1 &&
                     <NavItem>
-                        <NavLink href="">Wip-Tasks</NavLink>
+                        <Link className="nav-link" to={"/users"}>Users</Link>
+                    </NavItem>}
+                    <NavItem>
+                        <Link className="nav-link" to={"/tasks"}>Tasks</Link>
+                    </NavItem>
+                    <NavItem  className="ml-auto" style={{marginRight:'15px'}}>
+                        <Link to={"/logout"} className='btn btn-primary' id="logout">Logout</Link>
                     </NavItem>
                 </Nav>
-                <Button color="primary" size="sm" id="logoutButton" className="float-right" onClick={this._logout}>Logout</Button>
-
             </div>
         );
     }

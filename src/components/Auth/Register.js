@@ -9,8 +9,7 @@ export default class Register extends Component {
         name: '',
         email: '',
         password: '',
-        errors:[],
-        shouldRerender:false
+        errorMessage:'',
     };
 
 
@@ -22,19 +21,6 @@ export default class Register extends Component {
         });
     };
 
-    async componentDidUpdate() {
-        if (this.state.shouldRerender) {
-            this.setState({
-                name:'',
-                email:'',
-                password:'',
-                errors:[],
-                shouldRerender: false
-            });
-        }
-    }
-
-
     _register = async () => {
         const {name,email, password} = this.state;
 
@@ -43,19 +29,17 @@ export default class Register extends Component {
         });
 
         if (res && res.data && res.data.responseType === 'success') {
-            this.setState({
-                shouldRerender: true,
-            });
-
+            this.props.history.push('/login');
         } else {
             this.setState({
-                errors: res.data.errorMessage
+                errorMessage: res.data.errorMessage
             })
         }
     };
 
 
     render() {
+        const {name, email, password, errorMessage} = this.state;
         return (
             <FrontLayout>
                 <h2 className="text-center">Register</h2>
@@ -66,7 +50,7 @@ export default class Register extends Component {
                                name="name"
                                id="name"
                                placeholder="Name"
-                               value={this.state.name}
+                               value={name}
                                onChange={this._onChange} required/>
                     </FormGroup>
                     <FormGroup>
@@ -75,7 +59,7 @@ export default class Register extends Component {
                                name="email"
                                id="email"
                                placeholder="Email"
-                               value={this.state.email}
+                               value={email}
                                onChange={this._onChange}
                                required/>
                     </FormGroup>
@@ -85,12 +69,12 @@ export default class Register extends Component {
                                name="password"
                                id="password"
                                placeholder="Password"
-                               value={this.state.password}
+                               value={password}
                                onChange={this._onChange}
                                required/>
                     </FormGroup>
 
-                    <p className="errors">{this.state.errors}</p>
+                    {errorMessage !=='' &&  <p className="errors">{errorMessage}</p>}
                     <Button color="primary" onClick={this._register}>Register</Button>
                     <Link to={'login'} style={{float:'right',marginTop:'6px'}}>Already member?Go to login page.</Link>
 

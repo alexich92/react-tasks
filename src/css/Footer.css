@@ -1,9 +1,11 @@
 .footer{
-    position:absolute;
+    position:absolute;;
     bottom:0;
+    left: 0;
+    right: 0;
     width:100%;
     height:60px;
-    background:rgba(175, 156, 101, 0.5);;
+    background:rgba(175, 156, 101, 0.5);
 }
 
 .footer h5{

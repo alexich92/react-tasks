@@ -3,8 +3,8 @@ import axios from 'axios';
 import UserRow from "./UserRow";
 import Layout from '../Misc/Layout';
 import '../../css/Users.css';
+import {Row,Col,ModalFooter, Button, Modal, ModalHeader, ModalBody, FormGroup, Form, Label, Input, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
-import {ModalFooter, Button, Modal, ModalHeader, ModalBody, FormGroup, Form, Label, Input, Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 
 export default class Users extends Component {
     state = {
@@ -19,7 +19,7 @@ export default class Users extends Component {
         shouldRerender: false,
         currentPage:'',
         lastPage:'',
-        errors:[]
+        errorMessage:''
     };
 
     async componentDidMount() {
@@ -38,7 +38,7 @@ export default class Users extends Component {
             this.setState({
                 users: users.data.data.data,
                 shouldRerender: false,
-                errors:[]
+                errorMessage:''
             });
         }
     }
@@ -105,7 +105,7 @@ export default class Users extends Component {
             });
         }else{
             this.setState({
-                errors: res.data.errorMessage
+                errorMessage: res.data.errorMessage
             })
         }
     };
@@ -119,7 +119,7 @@ export default class Users extends Component {
             role: '',
             open: true,
             deleteAction:false,
-            errors:[],
+            errorMessage:''
         });
     };
 
@@ -128,7 +128,7 @@ export default class Users extends Component {
             id:user.id,
             open:true,
             deleteAction:true,
-            errors:[],
+            errorMessage:''
         })
     }
 
@@ -139,13 +139,14 @@ export default class Users extends Component {
             email: user.email,
             role: user.role_id,
             open: true,
-            errors:[],
+            errorMessage:'',
             deleteAction:false,
         });
     };
 
     render() {
-        const {users, id,lastPage,deleteAction} = this.state;
+        const {users, id,lastPage,deleteAction,errorMessage} = this.state;
+        const{user} = this.props;
 
         const paginationNumbers = [];
         for (let i = 1; i <=lastPage; i++) {
@@ -161,7 +162,7 @@ export default class Users extends Component {
         });
 
         return (
-            <Layout>
+            <Layout user={user}>
                 <h1 className="text-center">Users lists</h1>
                 <Button color="primary" onClick={this._add}>Add user</Button>
                 <hr/>
@@ -214,7 +215,7 @@ export default class Users extends Component {
 
                         {deleteAction && <h4>Are you sure you want to delete this user?</h4>}
 
-                        <p style={{color:'red'}}>{this.state.errors}</p>
+                        {errorMessage !=='' && <p style={{color:'red'}}>{this.state.errors}</p>}
                     </ModalBody>
                     <ModalFooter>
                         {!deleteAction && <Button color="primary" onClick={this._userAction}>{id ? 'Edit user' : 'Add user'}</Button> }
@@ -223,10 +224,20 @@ export default class Users extends Component {
                     </ModalFooter>
                 </Modal>
 
+
                 <div className={'users-list'}>
+                    <Row className={'table-header'}>
+                        <Col xs={1}>Id</Col>
+                        <Col xs={3}>Name</Col>
+                        <Col xs={4}>Email</Col>
+                        <Col xs={2}>Role</Col>
+                        <Col xs={2}>Actions</Col>
+                    </Row>
+                    <hr/>
                     {users && users.map((user, key) => {
                         return <UserRow key={key} user={user} edit={this._edit} deleted={this._delete}/>
                     })}
+                    <hr/>
                     <Pagination className="user-pagination">
                         <PaginationItem>
                             <PaginationLink previous href="#" />
